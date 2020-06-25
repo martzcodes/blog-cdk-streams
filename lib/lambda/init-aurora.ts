@@ -1,7 +1,6 @@
 import * as AWS from "aws-sdk";
 import { RDSDataService } from "aws-sdk";
 
-const RDS = new AWS.RDS();
 const RDSDATA = new AWS.RDSDataService();
 
 AWS.config.update({

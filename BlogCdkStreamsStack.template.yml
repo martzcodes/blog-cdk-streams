@@ -1,0 +1,1502 @@
+Resources:
+  chefvpcC7DDE103:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/Resource
+  chefvpcPublicSubnet1Subnet8C96CEFB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/18
+      VpcId:
+        Ref: chefvpcC7DDE103
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet1/Subnet
+  chefvpcPublicSubnet1RouteTable61CB643C:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: chefvpcC7DDE103
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet1/RouteTable
+  chefvpcPublicSubnet1RouteTableAssociationB26D1BE7:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPublicSubnet1RouteTable61CB643C
+      SubnetId:
+        Ref: chefvpcPublicSubnet1Subnet8C96CEFB
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet1/RouteTableAssociation
+  chefvpcPublicSubnet1DefaultRoute51E5EA61:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPublicSubnet1RouteTable61CB643C
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: chefvpcIGWB4BB429F
+    DependsOn:
+      - chefvpcVPCGW7F5A2C2B
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet1/DefaultRoute
+  chefvpcPublicSubnet1EIP5DE72828:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet1/EIP
+  chefvpcPublicSubnet1NATGatewayA05D34D4:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - chefvpcPublicSubnet1EIP5DE72828
+          - AllocationId
+      SubnetId:
+        Ref: chefvpcPublicSubnet1Subnet8C96CEFB
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet1/NATGateway
+  chefvpcPublicSubnet2SubnetFE24076B:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.64.0/18
+      VpcId:
+        Ref: chefvpcC7DDE103
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet2/Subnet
+  chefvpcPublicSubnet2RouteTable269B587E:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: chefvpcC7DDE103
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet2/RouteTable
+  chefvpcPublicSubnet2RouteTableAssociationD7C3DE88:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPublicSubnet2RouteTable269B587E
+      SubnetId:
+        Ref: chefvpcPublicSubnet2SubnetFE24076B
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet2/RouteTableAssociation
+  chefvpcPublicSubnet2DefaultRoute55A26E04:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPublicSubnet2RouteTable269B587E
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: chefvpcIGWB4BB429F
+    DependsOn:
+      - chefvpcVPCGW7F5A2C2B
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet2/DefaultRoute
+  chefvpcPublicSubnet2EIP6A0F93B6:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet2/EIP
+  chefvpcPublicSubnet2NATGateway7539360E:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - chefvpcPublicSubnet2EIP6A0F93B6
+          - AllocationId
+      SubnetId:
+        Ref: chefvpcPublicSubnet2SubnetFE24076B
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PublicSubnet2/NATGateway
+  chefvpcPrivateSubnet1SubnetED281D70:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/18
+      VpcId:
+        Ref: chefvpcC7DDE103
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet1/Subnet
+  chefvpcPrivateSubnet1RouteTable2391A534:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: chefvpcC7DDE103
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet1/RouteTable
+  chefvpcPrivateSubnet1RouteTableAssociation7B625B1B:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPrivateSubnet1RouteTable2391A534
+      SubnetId:
+        Ref: chefvpcPrivateSubnet1SubnetED281D70
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet1/RouteTableAssociation
+  chefvpcPrivateSubnet1DefaultRouteC3F7826C:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPrivateSubnet1RouteTable2391A534
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: chefvpcPublicSubnet1NATGatewayA05D34D4
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet1/DefaultRoute
+  chefvpcPrivateSubnet2Subnet71B5B75A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.192.0/18
+      VpcId:
+        Ref: chefvpcC7DDE103
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet2/Subnet
+  chefvpcPrivateSubnet2RouteTable5E8A4451:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: chefvpcC7DDE103
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet2/RouteTable
+  chefvpcPrivateSubnet2RouteTableAssociation57ECCD7A:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPrivateSubnet2RouteTable5E8A4451
+      SubnetId:
+        Ref: chefvpcPrivateSubnet2Subnet71B5B75A
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet2/RouteTableAssociation
+  chefvpcPrivateSubnet2DefaultRoute37269730:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: chefvpcPrivateSubnet2RouteTable5E8A4451
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: chefvpcPublicSubnet2NATGateway7539360E
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/PrivateSubnet2/DefaultRoute
+  chefvpcIGWB4BB429F:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: BlogCdkStreamsStack/chef-vpc
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/IGW
+  chefvpcVPCGW7F5A2C2B:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: chefvpcC7DDE103
+      InternetGatewayId:
+        Ref: chefvpcIGWB4BB429F
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-vpc/VPCGW
+  auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description:
+        Fn::Join:
+          - ""
+          - - "Generated by the CDK for stack: "
+            - Ref: AWS::StackName
+      GenerateSecretString:
+        ExcludeCharacters: '"@/\'
+        GenerateStringKey: password
+        PasswordLength: 30
+        SecretStringTemplate: '{"username":"dbroot"}'
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/aurora-serverless-chef/MasterUserSecretDemoDataApi/Resource
+  auroraserverlesschefMasterUserSecretDemoDataApiAttachedSecret53226B82:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    Properties:
+      SecretId:
+        Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+      TargetId:
+        Fn::Join:
+          - ""
+          - - "arn:aws:rds:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":cluster:"
+            - Ref: auroraserverlesschefapidbclusterF2051C42
+      TargetType: AWS::RDS::DBCluster
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/aurora-serverless-chef/MasterUserSecretDemoDataApi/AttachedSecret/Resource
+  auroraserverlesschefDatabaseSecurityGroup329B23B4:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: DB Cluster (chef) security group
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: chefvpcC7DDE103
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/aurora-serverless-chef/DatabaseSecurityGroup/Resource
+  auroraserverlesschefdbsubnetgroup9CCA38B3:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: chef database cluster subnet group
+      SubnetIds:
+        - Ref: chefvpcPrivateSubnet1SubnetED281D70
+        - Ref: chefvpcPrivateSubnet2Subnet71B5B75A
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/aurora-serverless-chef/db-subnet-group
+  auroraserverlesschefapidbclusterF2051C42:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora
+      DBSubnetGroupName:
+        Ref: auroraserverlesschefdbsubnetgroup9CCA38B3
+      DeletionProtection: false
+      EnableHttpEndpoint: true
+      EngineMode: serverless
+      MasterUsername:
+        Fn::Join:
+          - ""
+          - - "{{resolve:secretsmanager:"
+            - Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+            - :SecretString:username::}}
+      MasterUserPassword:
+        Fn::Join:
+          - ""
+          - - "{{resolve:secretsmanager:"
+            - Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+            - :SecretString:password::}}
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 16
+        MinCapacity: 1
+        SecondsUntilAutoPause: 300
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/aurora-serverless-chef/apidbcluster
+  getAuroraChefsFunctionServiceRole446D92CF:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/getAuroraChefsFunction/ServiceRole/Resource
+  getAuroraChefsFunctionServiceRoleDefaultPolicy867C21AE:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - secretsmanager:GetSecretValue
+              - secretsmanager:PutResourcePolicy
+              - secretsmanager:PutSecretValue
+              - secretsmanager:DeleteSecret
+              - secretsmanager:DescribeSecret
+              - secretsmanager:TagResource
+            Effect: Allow
+            Resource:
+              Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+          - Action:
+              - secretsmanager:CreateSecret
+              - secretsmanager:ListSecrets
+              - secretsmanager:GetRandomPassword
+              - tag:GetResources
+              - rds-data:BatchExecuteStatement
+              - rds-data:BeginTransaction
+              - rds-data:CommitTransaction
+              - rds-data:ExecuteStatement
+              - rds-data:RollbackTransaction
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:rds:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":cluster:"
+                  - Ref: auroraserverlesschefapidbclusterF2051C42
+        Version: "2012-10-17"
+      PolicyName: getAuroraChefsFunctionServiceRoleDefaultPolicy867C21AE
+      Roles:
+        - Ref: getAuroraChefsFunctionServiceRole446D92CF
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/getAuroraChefsFunction/ServiceRole/DefaultPolicy/Resource
+  getAuroraChefsFunctionF0FE8ED9:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052bS3Bucket778F14F5
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052bS3VersionKeyDC312A18
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052bS3VersionKeyDC312A18
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - getAuroraChefsFunctionServiceRole446D92CF
+          - Arn
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          DBCLUSTERARN:
+            Fn::Join:
+              - ""
+              - - "arn:aws:rds:"
+                - Ref: AWS::Region
+                - ":"
+                - Ref: AWS::AccountId
+                - ":cluster:"
+                - Ref: auroraserverlesschefapidbclusterF2051C42
+          DBCLUSTERID:
+            Ref: auroraserverlesschefapidbclusterF2051C42
+          SECRETARN:
+            Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+      Timeout: 60
+    DependsOn:
+      - getAuroraChefsFunctionServiceRoleDefaultPolicy867C21AE
+      - getAuroraChefsFunctionServiceRole446D92CF
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/getAuroraChefsFunction/Resource
+      aws:asset:path: asset.3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052b
+      aws:asset:property: Code
+  initAuroraFunctionServiceRole15D630A3:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/initAuroraFunction/ServiceRole/Resource
+  initAuroraFunctionServiceRoleDefaultPolicyFCCCEC8D:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - secretsmanager:GetSecretValue
+              - secretsmanager:PutResourcePolicy
+              - secretsmanager:PutSecretValue
+              - secretsmanager:DeleteSecret
+              - secretsmanager:DescribeSecret
+              - secretsmanager:TagResource
+            Effect: Allow
+            Resource:
+              Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+          - Action:
+              - secretsmanager:CreateSecret
+              - secretsmanager:ListSecrets
+              - secretsmanager:GetRandomPassword
+              - tag:GetResources
+              - rds-data:BatchExecuteStatement
+              - rds-data:BeginTransaction
+              - rds-data:CommitTransaction
+              - rds-data:ExecuteStatement
+              - rds-data:RollbackTransaction
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:rds:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":cluster:"
+                  - Ref: auroraserverlesschefapidbclusterF2051C42
+        Version: "2012-10-17"
+      PolicyName: initAuroraFunctionServiceRoleDefaultPolicyFCCCEC8D
+      Roles:
+        - Ref: initAuroraFunctionServiceRole15D630A3
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/initAuroraFunction/ServiceRole/DefaultPolicy/Resource
+  initAuroraFunction2F439BEA:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8S3Bucket9651A003
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8S3VersionKeyE3FAB734
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8S3VersionKeyE3FAB734
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - initAuroraFunctionServiceRole15D630A3
+          - Arn
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          DBCLUSTERARN:
+            Fn::Join:
+              - ""
+              - - "arn:aws:rds:"
+                - Ref: AWS::Region
+                - ":"
+                - Ref: AWS::AccountId
+                - ":cluster:"
+                - Ref: auroraserverlesschefapidbclusterF2051C42
+          DBCLUSTERID:
+            Ref: auroraserverlesschefapidbclusterF2051C42
+          SECRETARN:
+            Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+      Timeout: 60
+    DependsOn:
+      - initAuroraFunctionServiceRoleDefaultPolicyFCCCEC8D
+      - initAuroraFunctionServiceRole15D630A3
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/initAuroraFunction/Resource
+      aws:asset:path: asset.47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8
+      aws:asset:property: Code
+  writeAuroraChefsFunctionServiceRole866E0DFE:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/writeAuroraChefsFunction/ServiceRole/Resource
+  writeAuroraChefsFunctionServiceRoleDefaultPolicy62788685:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - secretsmanager:GetSecretValue
+              - secretsmanager:PutResourcePolicy
+              - secretsmanager:PutSecretValue
+              - secretsmanager:DeleteSecret
+              - secretsmanager:DescribeSecret
+              - secretsmanager:TagResource
+            Effect: Allow
+            Resource:
+              Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+          - Action:
+              - secretsmanager:CreateSecret
+              - secretsmanager:ListSecrets
+              - secretsmanager:GetRandomPassword
+              - tag:GetResources
+              - rds-data:BatchExecuteStatement
+              - rds-data:BeginTransaction
+              - rds-data:CommitTransaction
+              - rds-data:ExecuteStatement
+              - rds-data:RollbackTransaction
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:rds:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":cluster:"
+                  - Ref: auroraserverlesschefapidbclusterF2051C42
+          - Action: dynamodb:ListStreams
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - Fn::GetAtt:
+                      - chef8CEAD5B5
+                      - Arn
+                  - /stream/*
+          - Action:
+              - dynamodb:DescribeStream
+              - dynamodb:GetRecords
+              - dynamodb:GetShardIterator
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - chef8CEAD5B5
+                - StreamArn
+        Version: "2012-10-17"
+      PolicyName: writeAuroraChefsFunctionServiceRoleDefaultPolicy62788685
+      Roles:
+        - Ref: writeAuroraChefsFunctionServiceRole866E0DFE
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/writeAuroraChefsFunction/ServiceRole/DefaultPolicy/Resource
+  writeAuroraChefsFunctionF98F4FD9:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParametersf5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52fS3Bucket1BE99B26
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersf5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52fS3VersionKey1023E7AA
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersf5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52fS3VersionKey1023E7AA
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - writeAuroraChefsFunctionServiceRole866E0DFE
+          - Arn
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          DBCLUSTERARN:
+            Fn::Join:
+              - ""
+              - - "arn:aws:rds:"
+                - Ref: AWS::Region
+                - ":"
+                - Ref: AWS::AccountId
+                - ":cluster:"
+                - Ref: auroraserverlesschefapidbclusterF2051C42
+          DBCLUSTERID:
+            Ref: auroraserverlesschefapidbclusterF2051C42
+          SECRETARN:
+            Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+      Timeout: 60
+    DependsOn:
+      - writeAuroraChefsFunctionServiceRoleDefaultPolicy62788685
+      - writeAuroraChefsFunctionServiceRole866E0DFE
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/writeAuroraChefsFunction/Resource
+      aws:asset:path: asset.f5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52f
+      aws:asset:property: Code
+  writeAuroraChefsFunctionDynamoDBEventSourceBlogCdkStreamsStackchefB0BE3BF1E2C01370:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn:
+        Fn::GetAtt:
+          - chef8CEAD5B5
+          - StreamArn
+      FunctionName:
+        Ref: writeAuroraChefsFunctionF98F4FD9
+      BatchSize: 1
+      StartingPosition: LATEST
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/writeAuroraChefsFunction/DynamoDBEventSource:BlogCdkStreamsStackchefB0BE3BF1/Resource
+  chefapiC0F2137E:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: chef-api
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Resource
+  chefapiCloudWatchRole72DA1289:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/CloudWatchRole/Resource
+  chefapiAccountE6999226:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - chefapiCloudWatchRole72DA1289
+          - Arn
+    DependsOn:
+      - chefapiC0F2137E
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Account
+  chefapiDeployment2DA141F5b7f6aa3505180df909495e284201f573:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: chefapiC0F2137E
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - chefapiaurorachefsGETE17567D2
+      - chefapiaurorachefsPOST8013F3C2
+      - chefapiaurorachefsDEC0FF91
+      - chefapiauroraGETF35A89C1
+      - chefapiaurora6BD4E312
+      - chefapidynamochefsGETCA559ACC
+      - chefapidynamochefsPOST7C425CDB
+      - chefapidynamochefs932EE14B
+      - chefapidynamo5E935458
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Deployment/Resource
+  chefapiDeploymentStageprod935D7D0E:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: chefapiC0F2137E
+      DeploymentId:
+        Ref: chefapiDeployment2DA141F5b7f6aa3505180df909495e284201f573
+      StageName: prod
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/DeploymentStage.prod/Resource
+  chefapiaurora6BD4E312:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - chefapiC0F2137E
+          - RootResourceId
+      PathPart: aurora
+      RestApiId:
+        Ref: chefapiC0F2137E
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/Resource
+  chefapiauroraGETApiPermissionBlogCdkStreamsStackchefapi440F57C3GETaurora1432C69D:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - initAuroraFunction2F439BEA
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /
+            - Ref: chefapiDeploymentStageprod935D7D0E
+            - /GET/aurora
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/GET/ApiPermission.BlogCdkStreamsStackchefapi440F57C3.GET..aurora
+  chefapiauroraGETApiPermissionTestBlogCdkStreamsStackchefapi440F57C3GETaurora1C505A80:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - initAuroraFunction2F439BEA
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /test-invoke-stage/GET/aurora
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/GET/ApiPermission.Test.BlogCdkStreamsStackchefapi440F57C3.GET..aurora
+  chefapiauroraGETF35A89C1:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Ref: chefapiaurora6BD4E312
+      RestApiId:
+        Ref: chefapiC0F2137E
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - initAuroraFunction2F439BEA
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/GET/Resource
+  chefapiaurorachefsDEC0FF91:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Ref: chefapiaurora6BD4E312
+      PathPart: chefs
+      RestApiId:
+        Ref: chefapiC0F2137E
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/Resource
+  chefapiaurorachefsGETApiPermissionBlogCdkStreamsStackchefapi440F57C3GETaurorachefs0691E60C:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - getAuroraChefsFunctionF0FE8ED9
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /
+            - Ref: chefapiDeploymentStageprod935D7D0E
+            - /GET/aurora/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/GET/ApiPermission.BlogCdkStreamsStackchefapi440F57C3.GET..aurora.chefs
+  chefapiaurorachefsGETApiPermissionTestBlogCdkStreamsStackchefapi440F57C3GETaurorachefs5974265D:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - getAuroraChefsFunctionF0FE8ED9
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /test-invoke-stage/GET/aurora/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/GET/ApiPermission.Test.BlogCdkStreamsStackchefapi440F57C3.GET..aurora.chefs
+  chefapiaurorachefsGETE17567D2:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Ref: chefapiaurorachefsDEC0FF91
+      RestApiId:
+        Ref: chefapiC0F2137E
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - getAuroraChefsFunctionF0FE8ED9
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/GET/Resource
+  chefapiaurorachefsPOSTApiPermissionBlogCdkStreamsStackchefapi440F57C3POSTaurorachefs4082B895:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - writeAuroraChefsFunctionF98F4FD9
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /
+            - Ref: chefapiDeploymentStageprod935D7D0E
+            - /POST/aurora/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/POST/ApiPermission.BlogCdkStreamsStackchefapi440F57C3.POST..aurora.chefs
+  chefapiaurorachefsPOSTApiPermissionTestBlogCdkStreamsStackchefapi440F57C3POSTaurorachefsF816D61B:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - writeAuroraChefsFunctionF98F4FD9
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /test-invoke-stage/POST/aurora/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/POST/ApiPermission.Test.BlogCdkStreamsStackchefapi440F57C3.POST..aurora.chefs
+  chefapiaurorachefsPOST8013F3C2:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: chefapiaurorachefsDEC0FF91
+      RestApiId:
+        Ref: chefapiC0F2137E
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - writeAuroraChefsFunctionF98F4FD9
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/aurora/chefs/POST/Resource
+  chefapidynamo5E935458:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - chefapiC0F2137E
+          - RootResourceId
+      PathPart: dynamo
+      RestApiId:
+        Ref: chefapiC0F2137E
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/Resource
+  chefapidynamochefs932EE14B:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Ref: chefapidynamo5E935458
+      PathPart: chefs
+      RestApiId:
+        Ref: chefapiC0F2137E
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/Resource
+  chefapidynamochefsGETApiPermissionBlogCdkStreamsStackchefapi440F57C3GETdynamochefs988029AD:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - getDynamoChefsFunction0DDDE13F
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /
+            - Ref: chefapiDeploymentStageprod935D7D0E
+            - /GET/dynamo/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/GET/ApiPermission.BlogCdkStreamsStackchefapi440F57C3.GET..dynamo.chefs
+  chefapidynamochefsGETApiPermissionTestBlogCdkStreamsStackchefapi440F57C3GETdynamochefs5368BBD4:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - getDynamoChefsFunction0DDDE13F
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /test-invoke-stage/GET/dynamo/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/GET/ApiPermission.Test.BlogCdkStreamsStackchefapi440F57C3.GET..dynamo.chefs
+  chefapidynamochefsGETCA559ACC:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId:
+        Ref: chefapidynamochefs932EE14B
+      RestApiId:
+        Ref: chefapiC0F2137E
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - getDynamoChefsFunction0DDDE13F
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/GET/Resource
+  chefapidynamochefsPOSTApiPermissionBlogCdkStreamsStackchefapi440F57C3POSTdynamochefsBEF0BA88:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - updateDynamoChef623EF205
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /
+            - Ref: chefapiDeploymentStageprod935D7D0E
+            - /POST/dynamo/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/POST/ApiPermission.BlogCdkStreamsStackchefapi440F57C3.POST..dynamo.chefs
+  chefapidynamochefsPOSTApiPermissionTestBlogCdkStreamsStackchefapi440F57C3POSTdynamochefsFA1E88C8:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - updateDynamoChef623EF205
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: chefapiC0F2137E
+            - /test-invoke-stage/POST/dynamo/chefs
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/POST/ApiPermission.Test.BlogCdkStreamsStackchefapi440F57C3.POST..dynamo.chefs
+  chefapidynamochefsPOST7C425CDB:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: chefapidynamochefs932EE14B
+      RestApiId:
+        Ref: chefapiC0F2137E
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - updateDynamoChef623EF205
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef-api/Default/dynamo/chefs/POST/Resource
+  chef8CEAD5B5:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      KeySchema:
+        - AttributeName: ChefId
+          KeyType: HASH
+      AttributeDefinitions:
+        - AttributeName: ChefId
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+      TableName: chef
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/chef/Resource
+  updateDynamoChefServiceRole4552F8F4:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/updateDynamoChef/ServiceRole/Resource
+  updateDynamoChefServiceRoleDefaultPolicy9D8B04F3:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - dynamodb:BatchGetItem
+              - dynamodb:GetRecords
+              - dynamodb:GetShardIterator
+              - dynamodb:Query
+              - dynamodb:GetItem
+              - dynamodb:Scan
+              - dynamodb:BatchWriteItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - chef8CEAD5B5
+                  - Arn
+              - Ref: AWS::NoValue
+        Version: "2012-10-17"
+      PolicyName: updateDynamoChefServiceRoleDefaultPolicy9D8B04F3
+      Roles:
+        - Ref: updateDynamoChefServiceRole4552F8F4
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/updateDynamoChef/ServiceRole/DefaultPolicy/Resource
+  updateDynamoChef623EF205:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4eS3Bucket585C58C7
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4eS3VersionKeyC3E4ACFD
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4eS3VersionKeyC3E4ACFD
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - updateDynamoChefServiceRole4552F8F4
+          - Arn
+      Runtime: nodejs12.x
+    DependsOn:
+      - updateDynamoChefServiceRoleDefaultPolicy9D8B04F3
+      - updateDynamoChefServiceRole4552F8F4
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/updateDynamoChef/Resource
+      aws:asset:path: asset.50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4e
+      aws:asset:property: Code
+  getDynamoChefsFunctionServiceRole8A43D9A1:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/getDynamoChefsFunction/ServiceRole/Resource
+  getDynamoChefsFunctionServiceRoleDefaultPolicyDD986D37:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - dynamodb:BatchGetItem
+              - dynamodb:GetRecords
+              - dynamodb:GetShardIterator
+              - dynamodb:Query
+              - dynamodb:GetItem
+              - dynamodb:Scan
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - chef8CEAD5B5
+                  - Arn
+              - Ref: AWS::NoValue
+        Version: "2012-10-17"
+      PolicyName: getDynamoChefsFunctionServiceRoleDefaultPolicyDD986D37
+      Roles:
+        - Ref: getDynamoChefsFunctionServiceRole8A43D9A1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/getDynamoChefsFunction/ServiceRole/DefaultPolicy/Resource
+  getDynamoChefsFunction0DDDE13F:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29fS3BucketA3D3335B
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29fS3VersionKeyB8D48C95
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29fS3VersionKeyB8D48C95
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - getDynamoChefsFunctionServiceRole8A43D9A1
+          - Arn
+      Runtime: nodejs12.x
+    DependsOn:
+      - getDynamoChefsFunctionServiceRoleDefaultPolicyDD986D37
+      - getDynamoChefsFunctionServiceRole8A43D9A1
+    Metadata:
+      aws:cdk:path: BlogCdkStreamsStack/getDynamoChefsFunction/Resource
+      aws:asset:path: asset.471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29f
+      aws:asset:property: Code
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=1.46.0,@aws-cdk/assets=1.47.0,@aws-cdk/aws-apigateway=1.47.0,@aws-cdk/aws-applicationautoscaling=1.46.0,@aws-cdk/aws-autoscaling-common=1.46.0,@aws-cdk/aws-cloudwatch=1.47.0,@aws-cdk/aws-dynamodb=1.46.0,@aws-cdk/aws-ec2=1.46.0,@aws-cdk/aws-events=1.47.0,@aws-cdk/aws-iam=1.47.0,@aws-cdk/aws-kms=1.47.0,@aws-cdk/aws-lambda=1.46.0,@aws-cdk/aws-lambda-event-sources=1.47.0,@aws-cdk/aws-lambda-nodejs=1.46.0,@aws-cdk/aws-logs=1.46.0,@aws-cdk/aws-rds=1.46.0,@aws-cdk/aws-s3=1.47.0,@aws-cdk/aws-s3-assets=1.47.0,@aws-cdk/aws-s3-notifications=1.47.0,@aws-cdk/aws-sam=1.46.0,@aws-cdk/aws-secretsmanager=1.46.0,@aws-cdk/aws-sns=1.47.0,@aws-cdk/aws-sns-subscriptions=1.47.0,@aws-cdk/aws-sqs=1.46.0,@aws-cdk/aws-ssm=1.46.0,@aws-cdk/cdk-assets-schema=1.46.0,@aws-cdk/cloud-assembly-schema=1.47.0,@aws-cdk/core=1.47.0,@aws-cdk/custom-resources=1.46.0,@aws-cdk/cx-api=1.47.0,@aws-cdk/region-info=1.47.0,jsii-runtime=node.js/v12.13.1
+    Condition: CDKMetadataAvailable
+Outputs:
+  auroraserverlesschefSecretARN0D877756:
+    Value:
+      Ref: auroraserverlesschefMasterUserSecretDemoDataApi0768F5F2
+  auroraserverlesschefDBClusterARN69229CF4:
+    Value:
+      Fn::Join:
+        - ""
+        - - "arn:aws:rds:"
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":cluster:"
+          - Ref: auroraserverlesschefapidbclusterF2051C42
+  auroraserverlesschefDBClusterDBIdentifier5B584C8B:
+    Value:
+      Ref: auroraserverlesschefapidbclusterF2051C42
+  chefapiEndpointFF6D2012:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: chefapiC0F2137E
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: chefapiDeploymentStageprod935D7D0E
+          - /
+Parameters:
+  AssetParameters3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052bS3Bucket778F14F5:
+    Type: String
+    Description: S3 bucket for asset "3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052b"
+  AssetParameters3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052bS3VersionKeyDC312A18:
+    Type: String
+    Description: S3 key for asset version "3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052b"
+  AssetParameters3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052bArtifactHash4EADAD08:
+    Type: String
+    Description: Artifact hash for asset "3dc9ab6b6456555325f86027b05588d63ec7c6ce7f856aace0a75e6b232b052b"
+  AssetParameters47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8S3Bucket9651A003:
+    Type: String
+    Description: S3 bucket for asset "47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8"
+  AssetParameters47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8S3VersionKeyE3FAB734:
+    Type: String
+    Description: S3 key for asset version "47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8"
+  AssetParameters47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8ArtifactHash05BA2EF9:
+    Type: String
+    Description: Artifact hash for asset "47e9c3c3b9e81e4d83b4bd32932ee23de1ac5e9aa2aa67bd2f32904d3e4f19e8"
+  AssetParametersf5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52fS3Bucket1BE99B26:
+    Type: String
+    Description: S3 bucket for asset "f5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52f"
+  AssetParametersf5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52fS3VersionKey1023E7AA:
+    Type: String
+    Description: S3 key for asset version "f5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52f"
+  AssetParametersf5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52fArtifactHash7A706189:
+    Type: String
+    Description: Artifact hash for asset "f5bc510f722db8ec62752a24cf55569288a1911da05af970aa067516e3d0e52f"
+  AssetParameters50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4eS3Bucket585C58C7:
+    Type: String
+    Description: S3 bucket for asset "50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4e"
+  AssetParameters50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4eS3VersionKeyC3E4ACFD:
+    Type: String
+    Description: S3 key for asset version "50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4e"
+  AssetParameters50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4eArtifactHash7FDB2D84:
+    Type: String
+    Description: Artifact hash for asset "50af1a2edb3de3c2936b44f30ec94e6b4f47a7e16010ed85bf2f37b9d2c37f4e"
+  AssetParameters471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29fS3BucketA3D3335B:
+    Type: String
+    Description: S3 bucket for asset "471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29f"
+  AssetParameters471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29fS3VersionKeyB8D48C95:
+    Type: String
+    Description: S3 key for asset version "471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29f"
+  AssetParameters471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29fArtifactHash78CCCB2C:
+    Type: String
+    Description: Artifact hash for asset "471222a51cafdd9df25a21ef0d214699092bc61fd2bfd9fc4363c1776f98f29f"
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+

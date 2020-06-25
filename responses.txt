@@ -1,0 +1,262 @@
+https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/
+
+GET https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/aurora/
+<html>
+    <body>This is path /aurora/ here is your data {
+  "generatedFields": [],
+  "numberOfRecordsUpdated": 0
+}</body>
+</html>
+
+GET https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/aurora/chefs
+<html>
+    <body>This is path /aurora/chefs here is your data {
+  "columnMetadata": [
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": true,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": true,
+      "label": "id",
+      "name": "id",
+      "nullable": 0,
+      "precision": 20,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": -5,
+      "typeName": "BIGINT"
+    },
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": false,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "cheffirst",
+      "name": "cheffirst",
+      "nullable": 1,
+      "precision": 255,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": 12,
+      "typeName": "VARCHAR"
+    },
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": false,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "cheflast",
+      "name": "cheflast",
+      "nullable": 1,
+      "precision": 255,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": 12,
+      "typeName": "VARCHAR"
+    }
+  ],
+  "numberOfRecordsUpdated": 0,
+  "records": []
+}</body>
+</html>
+
+POST https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/aurora/chefs {"firstName":"Alton","lastName":"Brown"}
+<html>
+    <body>This is path /aurora/chefs here is your response {
+  "updateResults": [
+    {
+      "generatedFields": [
+        {
+          "longValue": 1
+        }
+      ]
+    }
+  ]
+}</body>
+</html>
+
+GET https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/aurora/chefs
+<html>
+    <body>This is path /aurora/chefs here is your data {
+  "columnMetadata": [
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": true,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": true,
+      "label": "id",
+      "name": "id",
+      "nullable": 0,
+      "precision": 20,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": -5,
+      "typeName": "BIGINT"
+    },
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": false,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "cheffirst",
+      "name": "cheffirst",
+      "nullable": 1,
+      "precision": 255,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": 12,
+      "typeName": "VARCHAR"
+    },
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": false,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "cheflast",
+      "name": "cheflast",
+      "nullable": 1,
+      "precision": 255,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": 12,
+      "typeName": "VARCHAR"
+    }
+  ],
+  "numberOfRecordsUpdated": 0,
+  "records": [
+    [
+      {
+        "longValue": 1
+      },
+      {
+        "stringValue": "Alton"
+      },
+      {
+        "stringValue": "Brown"
+      }
+    ]
+  ]
+}</body>
+</html>
+
+GET https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/dynamo/chefs
+{
+    "Items": [],
+    "Count": 0,
+    "ScannedCount": 0
+}
+
+POST https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/dynamo/chefs {"firstName":"Bobby","lastName":"Flay"}
+{
+    "Attributes": {
+        "ChefId": "Flay#Bobby",
+        "firstName": "Bobby",
+        "lastName": "Flay"
+    }
+}
+
+GET https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/dynamo/chefs
+{
+    "Items": [
+        {
+            "ChefId": "Flay#Bobby",
+            "firstName": "Bobby",
+            "lastName": "Flay"
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1
+}
+
+GET https://nlqemzi885.execute-api.us-east-1.amazonaws.com/prod/aurora/chefs
+<html>
+    <body>This is path /aurora/chefs here is your data {
+  "columnMetadata": [
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": true,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": true,
+      "label": "id",
+      "name": "id",
+      "nullable": 0,
+      "precision": 20,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": -5,
+      "typeName": "BIGINT"
+    },
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": false,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "cheffirst",
+      "name": "cheffirst",
+      "nullable": 1,
+      "precision": 255,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": 12,
+      "typeName": "VARCHAR"
+    },
+    {
+      "arrayBaseColumnType": 0,
+      "isAutoIncrement": false,
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "cheflast",
+      "name": "cheflast",
+      "nullable": 1,
+      "precision": 255,
+      "scale": 0,
+      "schemaName": "",
+      "tableName": "cheftable",
+      "type": 12,
+      "typeName": "VARCHAR"
+    }
+  ],
+  "numberOfRecordsUpdated": 0,
+  "records": [
+    [
+      {
+        "longValue": 1
+      },
+      {
+        "stringValue": "Alton"
+      },
+      {
+        "stringValue": "Brown"
+      }
+    ],
+    [
+      {
+        "longValue": 2
+      },
+      {
+        "stringValue": "Bobby"
+      },
+      {
+        "stringValue": "Flay"
+      }
+    ]
+  ]
+}</body>
+</html>

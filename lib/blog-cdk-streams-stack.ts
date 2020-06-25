@@ -1,6 +1,6 @@
 import { Construct, Stack, StackProps, Duration, RemovalPolicy } from "@aws-cdk/core";
 import { Vpc } from "@aws-cdk/aws-ec2";
-import { Runtime, StartingPosition, IEventSource } from "@aws-cdk/aws-lambda";
+import { Runtime, StartingPosition } from "@aws-cdk/aws-lambda";
 import { AuroraServerless } from "./auroraserverless";
 import { NodejsFunction } from "@aws-cdk/aws-lambda-nodejs";
 import { PolicyStatement } from '@aws-cdk/aws-iam';

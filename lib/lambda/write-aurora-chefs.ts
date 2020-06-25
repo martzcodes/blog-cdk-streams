@@ -1,7 +1,6 @@
 import * as AWS from "aws-sdk";
 import { RDSDataService } from "aws-sdk";
 
-const RDS = new AWS.RDS();
 const RDSDATA = new AWS.RDSDataService();
 
 AWS.config.update({
@@ -29,12 +28,12 @@ const processEvent = (event: any): Chef[] => {
   }
   if (event.Records) {
     const inserts = event.Records.filter(
-      (evt: any) => evt.eventName === "INSERT"
+      (evt: any) =>  evt.eventName === "INSERT"
     );
     const items = inserts.map((ins: any) => {
       return {
-        firstName: ins.NewImage.firstName.S || "Gordon",
-        lastName: ins.NewImage.lastName.S || "Ramsay",
+        firstName: ins.dynamodb.NewImage.firstName.S || "Gordon",
+        lastName: ins.dynamodb.NewImage.lastName.S || "Ramsay",
       };
     });
     return items;
