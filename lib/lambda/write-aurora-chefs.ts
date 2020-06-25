@@ -12,6 +12,36 @@ AWS.config.update({
   },
 });
 
+interface Chef {
+  firstName: string;
+  lastName: string;
+}
+
+const processEvent = (event: any): Chef[] => {
+  if (event.body) {
+    const body = JSON.parse(event.body);
+    return [
+      {
+        firstName: body.firstName || "Gordon",
+        lastName: body.lastName || "Ramsay",
+      },
+    ];
+  }
+  if (event.Records) {
+    const inserts = event.Records.filter(
+      (evt: any) => evt.eventName === "INSERT"
+    );
+    const items = inserts.map((ins: any) => {
+      return {
+        firstName: ins.NewImage.firstName.S || "Gordon",
+        lastName: ins.NewImage.lastName.S || "Ramsay",
+      };
+    });
+    return items;
+  }
+  return [];
+};
+
 export const handler = async (event: any): Promise<any> => {
   try {
     console.log("START");
@@ -20,31 +50,33 @@ export const handler = async (event: any): Promise<any> => {
     console.log("ENV DBCLUSTERARN: " + process.env.DBCLUSTERARN);
     console.log("ENV DBCLUSTERID: " + process.env.DBCLUSTERID);
 
-    const body = JSON.parse(event.body);
+    const chefs = processEvent(event);
 
     const params3 = {
       secretArn: process.env.SECRETARN,
       resourceArn: process.env.DBCLUSTERARN,
       database: "chefdb",
       sql: `INSERT INTO cheftable(cheffirst,cheflast) VALUES (:cheffirst,:cheflast)`,
-      parameterSets: [
-        [
+      parameterSets: chefs.map((chef: Chef) => {
+        return [
           {
             name: "cheffirst",
             value: {
-              stringValue: body.firstName || "Gordon",
+              stringValue: chef.firstName,
             },
           },
           {
             name: "cheflast",
             value: {
-              stringValue: body.lastName || "Ramsay",
+              stringValue: chef.lastName,
             },
           },
-        ],
-      ],
+        ];
+      }),
     };
-    let data4 = await RDSDATA.batchExecuteStatement(params3 as RDSDataService.ExecuteStatementRequest).promise();
+    let data4 = await RDSDATA.batchExecuteStatement(
+      params3 as RDSDataService.ExecuteStatementRequest
+    ).promise();
 
     var tabledata = JSON.stringify(data4, null, 2);
 
